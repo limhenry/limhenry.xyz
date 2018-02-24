@@ -1,17 +1,9 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import './shared-styles.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="shared-styles.html">
-<dom-module id="my-stories-home">
-    <template>
+class MyStoriesHome extends Element {
+  static get template() {
+    return `
         <style include="shared-styles">
             :host {
                 display: block;
@@ -164,24 +156,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <a class="more" href="https://medium.com/@limhenry/" target="_blank">
             <span>Read More on Medium.com</span>
-            <iron-icon icon="my-icons:add-circle"></iron-icon>
-            </div>
-    </template>
+            <iron-icon icon="my-icons:add-circle"></iron-icon>    
+        </a>
+`;
+  }
 
-    <script>
-        class MyStoriesHome extends Polymer.Element {
-            static get is() { return 'my-stories-home'; }
+  static get is() { return 'my-stories-home'; }
 
-            static get properties() {
-                return {
-                    data: {
-                        type: Object,
-                        notify: true
-                    }
-                };
-            }
-        }
+  static get properties() {
+      return {
+          data: {
+              type: Object,
+              notify: true
+          }
+      };
+  }
+}
 
-        window.customElements.define(MyStoriesHome.is, MyStoriesHome);
-    </script>
-</dom-module>
+window.customElements.define(MyStoriesHome.is, MyStoriesHome);

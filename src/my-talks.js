@@ -1,18 +1,9 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import './shared-styles.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="shared-styles.html">
-
-<dom-module id="my-talks">
-  <template>
+class MyTalks extends Element {
+  static get template() {
+    return `
     <style include="shared-styles">
       :host {
         display: block;
@@ -30,7 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
     </div>
 
-    <div class="cover" style$="background-image:url([[rootPath]]images/talks.jpg)">
+    <div class="cover" style\$="background-image:url([[rootPath]]images/talks.jpg)">
       <div class="cover_label">
         <span>Tech Talk Thursday with Google and GDGKL @ Multimedia University, Cyberjaya</span>
       </div>
@@ -57,23 +48,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </template>
       </dom-repeat>
     </div>
+`;
+  }
 
-  </template>
+  static get is() { return 'my-talks'; }
 
-  <script>
-    class MyTalks extends Polymer.Element {
-      static get is() { return 'my-talks'; }
-
-      static get properties() {
-        return {
-          data: {
-            type: Object,
-            notify: true
-          }
-        };
+  static get properties() {
+    return {
+      data: {
+        type: Object,
+        notify: true
       }
-    }
+    };
+  }
+}
 
-    window.customElements.define(MyTalks.is, MyTalks);
-  </script>
-</dom-module>
+window.customElements.define(MyTalks.is, MyTalks);

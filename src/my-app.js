@@ -1,38 +1,31 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import '../node_modules/@polymer/app-layout/app-drawer/app-drawer.js';
+import '../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
+import '../node_modules/@polymer/app-layout/app-header/app-header.js';
+import '../node_modules/@polymer/app-layout/app-header-layout/app-header-layout.js';
+import '../node_modules/@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
+import '../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '../node_modules/@polymer/app-route/app-location.js';
+import '../node_modules/@polymer/app-route/app-route.js';
+import '../node_modules/@polymer/iron-pages/iron-pages.js';
+import '../node_modules/@polymer/iron-selector/iron-selector.js';
+import '../node_modules/@polymer/iron-ajax/iron-ajax.js';
+import '../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/app-route/app-location.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="my-icons.html">
+import './my-icons.js';
+import './my-home.js';
+import './my-awards.js';
+import './my-projects.js';
+import './my-stories.js';
+import './my-talks.js';
+import './shared-styles.js';
 
-<link rel="lazy-import" href="my-home.html">
-<link rel="lazy-import" href="my-talks.html">
-<link rel="lazy-import" href="my-awards.html">
-<link rel="lazy-import" href="my-projects.html">
-<link rel="lazy-import" href="my-stories.html">
+import { setPassiveTouchGestures } from '../node_modules/@polymer/polymer/lib/utils/settings.js';
+setPassiveTouchGestures(true);
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans:400,500" crossorigin="anonymous">
-
-<dom-module id="my-app">
-  <template>
+class MyApp extends Element {
+  static get template() {
+    return `
     <style>
       :host {
         --app-primary-color: #4285f4;
@@ -167,22 +160,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-ajax auto url="[[rootPath]]data/data.json" last-response="{{data}}"></iron-ajax>
 
-    <app-location route="{{route}}" url-space-regex="^[[rootPath]]">
-    </app-location>
+    <app-location route="{{route}}"></app-location>
 
-    <app-route route="{{route}}" pattern="[[rootPath]]:page/:id" data="{{routeData}}" tail="{{subroute}}">
-    </app-route>
+    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+    <app-route route="{{subroute}}" pattern="/stories/:id" data="{{subrouteData}}"> </app-route>
 
     <app-drawer-layout force-narrow >
       <!-- Drawer content -->
       <app-drawer id="drawer" slot="drawer" swipe-open>
         <app-toolbar>limhenry.xyz</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="home" href="[[rootPath]]home/">Home</a>
-          <a name="stories" href="[[rootPath]]stories/">Stories</a>
-          <a name="projects" href="[[rootPath]]projects/">Projects</a>
-          <a name="talks" href="[[rootPath]]talks/">Talks</a>
-          <a name="awards" href="[[rootPath]]awards/">Awards</a>
+          <a name="home" href="/home/">Home</a>
+          <a name="stories" href="/stories/">Stories</a>
+          <a name="projects" href="/projects/">Projects</a>
+          <a name="talks" href="/talks/">Talks</a>
+          <a name="awards" href="/awards/">Awards</a>
         </iron-selector>
       </app-drawer>
 
@@ -194,19 +186,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
             <div main-title>limhenry.xyz</div>
             <iron-selector selected="[[page]]" attr-for-selected="name" class="nav-list" role="navigation">
-              <a name="home" href="[[rootPath]]home/">Home</a>
-              <a name="stories" href="[[rootPath]]stories/">Stories</a>
-              <a name="projects" href="[[rootPath]]projects/">Projects</a>
-              <a name="talks" href="[[rootPath]]talks/">Talks</a>
-              <a name="awards" href="[[rootPath]]awards/">Awards</a>
+              <a name="home" href="/home/">Home</a>
+              <a name="stories" href="/stories/">Stories</a>
+              <a name="projects" href="/projects/">Projects</a>
+              <a name="talks" href="/talks/">Talks</a>
+              <a name="awards" href="/awards/">Awards</a>
             </iron-selector>
           </app-toolbar>
         </app-header>
 
-        <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="home" role="main">
+        <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible" fallback-selection="home">
           <my-home name="home"></my-home>
           <my-projects name="projects" data="[[data.projects]]"></my-projects>
-          <my-stories name="stories" route="{{route}}" data="[[data.stories]]"></my-stories>
+          <my-stories name="stories" route="{{subroute}}" data="[[data.stories]]"></my-stories>
           <my-talks name="talks" data="[[data.talks]]"></my-talks>
           <my-awards name="awards" data="[[data.awards]]"></my-awards>
         </iron-pages>
@@ -235,69 +227,60 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </footer>
       </app-header-layout>
     </app-drawer-layout>
-  </template>
+`;
+  }
 
-  <script>
-    // Gesture events like tap and track generated from touch will not be
-    // preventable, allowing for better scrolling performance.
-    Polymer.setPassiveTouchGestures(true);
+  static get is() { return 'my-app'; }
 
-    class MyApp extends Polymer.Element {
-      static get is() { return 'my-app'; }
+  static get properties() {
+    return {
+      page: {
+        type: String,
+        reflectToAttribute: true,
+        observer: '_pageChanged',
+      },
+      routeData: Object,
+      subroute: Object,
+      // This shouldn't be neccessary, but the Analyzer isn't picking up
+      // Polymer.Element#rootPath
+      rootPath: String,
+    };
+  }
 
-      static get properties() {
-        return {
-          page: {
-            type: String,
-            reflectToAttribute: true,
-            observer: '_pageChanged',
-          },
-          routeData: Object,
-          subroute: Object,
-          // This shouldn't be neccessary, but the Analyzer isn't picking up
-          // Polymer.Element#rootPath
-          rootPath: String,
-        };
-      }
+  static get observers() {
+    return [
+      '_routePageChanged(routeData.page)'
+    ];
+  }
 
-      static get observers() {
-        return [
-          '_routePageChanged(routeData.page)',
-          '_routeStoriesIdChanged(routeData.id)',
-        ];
-      }
+  _routePageChanged(page) {
+    // If no page was found in the route data, page will be an empty string.
+    // Default to 'home' in that case.
+    this.page = page || 'home';
 
-      _routePageChanged(page) {
-        // If no page was found in the route data, page will be an empty string.
-        // Default to 'home' in that case.
-        this.page = page || 'home';
-
-        // Close a non-persistent drawer when the page & route are changed.
-        if (!this.$.drawer.persistent) {
-          this.$.drawer.close();
-        }
-      }
-
-      _routeStoriesIdChanged() {
-        this.shadowRoot.querySelector('app-header-layout').header.scroll(0, 0);
-      }
-
-      _pageChanged(page) {
-        // Load page import on demand. Show 404 page if fails
-        this.shadowRoot.querySelector('app-header-layout').header.scroll(0, 0);
-        const resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
-        Polymer.importHref(
-          resolvedPageUrl,
-          null,
-          this._showPage404.bind(this),
-          true);
-      }
-
-      _showPage404() {
-        this.page = 'home';
-      }
+    // Close a non-persistent drawer when the page & route are changed.
+    if (!this.$.drawer.persistent) {
+      this.$.drawer.close();
     }
+  }
 
-    window.customElements.define(MyApp.is, MyApp);
-  </script>
-</dom-module>
+  _routeStoriesIdChanged() {
+    this.shadowRoot.querySelector('app-header-layout').header.scroll(0, 0);
+  }
+
+  _pageChanged(page, oldPage) {
+    if (page != null) {
+      // home route is eagerly loaded
+      this.shadowRoot.querySelector('app-header-layout').header.scroll(0, 0);
+    }
+  }
+
+  _pageLoaded() {}
+
+  _showPage404() {
+    // this.page = 'home';
+  }
+}
+
+window.customElements.define(MyApp.is, MyApp);
+

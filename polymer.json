@@ -1,11 +1,11 @@
 {
-  "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "entrypoint": "index.js",
+  "shell": "src/my-app.js",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src/my-home.js",
+    "src/my-awards.js",
+    "src/my-talks.js",
+    "src/my-stories.js"
   ],
   "sources": [
     "images/**/*",

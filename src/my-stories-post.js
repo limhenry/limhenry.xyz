@@ -1,19 +1,11 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import '../node_modules/@polymer/iron-ajax/iron-ajax.js';
+import '../node_modules/@polymer/marked-element/marked-element.js';
+import './shared-styles.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/marked-element/marked-element.html">
-<link rel="import" href="shared-styles.html">
-<dom-module id="my-stories-post">
-    <template>
+class MyStoriesPost extends Element {
+  static get template() {
+    return `
         <style include="shared-styles">
             :host {
                 display: block;
@@ -158,41 +150,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </div>
             </template>
         </dom-if>
+`;
+  }
 
+  static get is() { return 'my-stories-post'; }
 
-    </template>
+  static get properties() {
+      return {
+          route: {
+              type: Object,
+              notify: true,
+              observer: '_getPost'
+          }
+      };
+  }
 
-    <script>
-        class MyStoriesPost extends Polymer.Element {
-            static get is() { return 'my-stories-post'; }
+  _requestError() {
+      window.history.pushState({}, null, '/stories/');
+      window.dispatchEvent(new CustomEvent('location-changed'));
+  }
 
-            static get properties() {
-                return {
-                    route: {
-                        type: Object,
-                        notify: true,
-                        observer: '_getPost'
-                    }
-                };
-            }
+  _getPost() {
+      this.data = null;
+      if (this.route.page) {
+          this.$.ajax.url = this.rootPath + 'data/' + this.route.page + ".json";
+          this.$.ajax.generateRequest();
+      }
+  }
+}
 
-            _requestError() {
-                window.history.pushState({}, null, '/stories/');
-                window.dispatchEvent(new CustomEvent('location-changed'));
-            }
-
-            _getPost() {
-                this.data = null;
-                if (this.route.page) {
-                    this.$.ajax.url = this.rootPath + 'data/' + this.route.page + ".json";
-                    this.$.ajax.generateRequest();
-                }
-                else {
-                    console.log('cannot')
-                }
-            }
-        }
-
-        window.customElements.define(MyStoriesPost.is, MyStoriesPost);
-    </script>
-</dom-module>
+window.customElements.define(MyStoriesPost.is, MyStoriesPost);
