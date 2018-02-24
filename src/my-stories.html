@@ -1,0 +1,80 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="my-stories-home.html">
+<link rel="import" href="my-stories-post.html">
+
+<dom-module id="my-stories">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+            }
+        </style>
+
+        <app-route route="{{route}}" pattern="/stories/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+
+        <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="home">
+            <my-stories-home name="home" data="{{data}}"></my-stories-home>
+            <my-stories-post name="post" route="{{routeData}}"></my-stories-post>
+        </iron-pages>
+
+    </template>
+
+    <script>
+        class MyStories extends Polymer.Element {
+            static get is() { return 'my-stories'; }
+
+            static get observers() {
+                return [
+                    '_routePageChanged(routeData.page)'
+                ];
+            }
+
+            static get properties() {
+                return {
+                    page: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    data: {
+                        type: Object,
+                        notify: true
+                    },
+                    routeData: {
+                        type: Object,
+                        notify: true,
+                        reflectToAttribute: true,
+                    }
+                };
+            }
+
+            _pageChanged(page, oldPage) {
+                console.log(page, oldPage);
+                console.log(this.routeData.page)
+            }
+
+            _routePageChanged(page) {
+                if (page === undefined || page.length <= 0) {
+                    this.page = 'home';
+                }
+                else {
+                    this.page = 'post'
+                }
+            }
+        }
+
+        window.customElements.define(MyStories.is, MyStories);
+    </script>
+</dom-module>

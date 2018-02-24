@@ -1,0 +1,89 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-projects">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+
+      .item {
+        position: relative;
+      }
+
+      .item iron-icon {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+        right: 22px;
+        color: #b7b7b7;
+        width: 18px;
+    }
+
+    .item_header,
+    .item_info,
+    .item_description {
+      margin-right: 36px;
+    }
+    </style>
+
+    <div class="hero">
+      <div class="hero_title">Projects</div>
+      <div class="hero_description">
+        <p>I am trying to save the world using HTML, CSS and JavaScript.</p>
+      </div>
+    </div>
+
+    <div class="item_container">
+      <dom-repeat items="[[data]]">
+        <template>
+          <div class="item">
+            <iron-icon icon="my-icons:open-in-new"></iron-icon>
+            <div class="item_header">[[item.header]]</div>
+            <div class="item_info">
+              <dom-repeat items="[[item.techs]]">
+                <template>
+                  <div class="item_tag">
+                    <div class="item_circle" id="[[item.id]]"></div>
+                    <span>[[item.value]]</span>
+                  </div>
+                </template>
+              </dom-repeat>
+            </div>
+            <div class="item_description">[[item.description]]</div>
+          </div>
+        </template>
+      </dom-repeat>
+    </div>
+
+  </template>
+
+  <script>
+    class MyProjects extends Polymer.Element {
+      static get is() { return 'my-projects'; }
+
+      static get properties() {
+        return {
+          data: {
+            type: Object,
+            notify: true
+          }
+        };
+      }
+    }
+
+    window.customElements.define(MyProjects.is, MyProjects);
+  </script>
+</dom-module>
